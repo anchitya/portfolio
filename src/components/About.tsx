@@ -1,56 +1,85 @@
-import { motion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './About.css'
 
+gsap.registerPlugin(ScrollTrigger)
+
 const About = () => {
-  const stats = [
-    { label: 'Years Experience', value: '3.5+' },
-    { label: 'VMs Migrated', value: '250+' },
-    { label: 'Efficiency Gain', value: '60%+' },
-  ]
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!contentRef.current) return
+
+    gsap.from(contentRef.current, {
+      scrollTrigger: {
+        trigger: contentRef.current,
+        start: 'top 80%',
+        end: 'top 50%',
+        scrub: 1,
+      },
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+    })
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    }
+  }, [])
 
   return (
-    <section id="about" className="about">
-      <div className="container">
-        <motion.h2
-          className="section-title"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          About Me
-        </motion.h2>
-
-        <div className="about-content">
-          <motion.div
-            className="about-text"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+    <section id="about" className="about" ref={sectionRef}>
+      <div className="about-container">
+        <div className="about-content" ref={contentRef}>
+          <h2 className="section-title">About Me</h2>
+          <div className="about-text">
             <p>
-              I'm a Linux Infrastructure Engineer with 3.5+ years of experience delivering enterprise-scale virtualization, automation, and data center transformation initiatives. My core expertise lies in RHEL administration, VMware and KVM virtualization, and observability with Prometheus and Grafana.
+              I'm a passionate developer and designer with a love for creating beautiful and interactive web experiences. 
+              With expertise in React, TypeScript, and modern web technologies, I build performant applications that users love.
             </p>
             <p>
-              I specialize in building highly available, production-grade systems that meet strict SLA and reliability targets. At DXC Technology, I've led large-scale infrastructure projects including live migration of 250+ VMs across 3 data centers with zero unplanned downtime.
+              My journey in tech started with a curiosity about how things work. Now, I combine that curiosity with a 
+              deep understanding of design principles and user experience to create stunning digital products.
             </p>
-          </motion.div>
+            <p>
+              When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, 
+              or sharing knowledge with the community.
+            </p>
+          </div>
 
-          <div className="stats-grid">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                className="stat-card glass"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="stat-value gradient-text">{stat.value}</div>
-                <div className="stat-label">{stat.label}</div>
-              </motion.div>
-            ))}
+          <div className="skills">
+            <h3>Skills & Technologies</h3>
+            <div className="skills-grid">
+              <div className="skill-item">
+                <h4>Frontend</h4>
+                <ul>
+                  <li>React</li>
+                  <li>TypeScript</li>
+                  <li>GSAP</li>
+                  <li>Three.js</li>
+                </ul>
+              </div>
+              <div className="skill-item">
+                <h4>Backend</h4>
+                <ul>
+                  <li>Node.js</li>
+                  <li>Python</li>
+                  <li>SQL</li>
+                  <li>MongoDB</li>
+                </ul>
+              </div>
+              <div className="skill-item">
+                <h4>Tools & Platforms</h4>
+                <ul>
+                  <li>Vite</li>
+                  <li>Git</li>
+                  <li>Docker</li>
+                  <li>Vercel</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

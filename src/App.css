@@ -1,20 +1,16 @@
 .app {
-  position: relative;
+  width: 100%;
   min-height: 100vh;
-  overflow-x: hidden;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
 }
 
-/* Smooth page transitions */
-section {
-  animation: fadeInUp 0.8s ease-out;
-}
-
-/* Loading animation */
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
+.loading {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #888;
+  background: #0a0a0a;
 }

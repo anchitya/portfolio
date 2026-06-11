@@ -1,87 +1,59 @@
-import { motion } from 'framer-motion'
-import { FiArrowDown } from 'react-icons/fi'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
 import './Hero.css'
 
 const Hero = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  }
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const subtitleRef = useRef<HTMLParagraphElement>(null)
+  const ctaRef = useRef<HTMLButtonElement>(null)
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
-    },
+  useEffect(() => {
+    const tl = gsap.timeline()
+
+    tl.from(titleRef.current, {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: 'power2.out',
+    })
+      .from(subtitleRef.current, {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '-=0.4')
+      .from(ctaRef.current, {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '-=0.4')
+  }, [])
+
+  const scrollToProjects = () => {
+    const projectsSection = document.getElementById('projects')
+    projectsSection?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
     <section id="home" className="hero">
+      <div className="hero-content">
+        <h1 ref={titleRef} className="hero-title">
+          Hi, I'm <span>Anchitya</span>
+        </h1>
+        <p ref={subtitleRef} className="hero-subtitle">
+          Creative Developer & Designer | Building beautiful web experiences with modern technologies
+        </p>
+        <button ref={ctaRef} className="cta-button" onClick={scrollToProjects}>
+          View My Work
+          <span className="arrow">→</span>
+        </button>
+      </div>
       <div className="hero-background">
         <div className="gradient-orb gradient-orb-1"></div>
         <div className="gradient-orb gradient-orb-2"></div>
+        <div className="gradient-orb gradient-orb-3"></div>
       </div>
-
-      <motion.div
-        className="hero-content"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.div variants={itemVariants}>
-          <h1 className="hero-title">
-            Hi, I'm <span className="gradient-text">Anchitya</span>
-          </h1>
-        </motion.div>
-
-        <motion.div variants={itemVariants}>
-          <p className="hero-subtitle">
-            Linux & Cloud Infrastructure Analyst
-          </p>
-        </motion.div>
-
-        <motion.div variants={itemVariants}>
-          <p className="hero-description">
-            VCP-VCF Certified | AWS & Azure Expert | Infrastructure Automation Specialist
-          </p>
-        </motion.div>
-
-        <motion.div
-          variants={itemVariants}
-          className="hero-buttons"
-        >
-          <motion.button
-            className="btn btn-primary glass"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            View My Work
-          </motion.button>
-          <motion.button
-            className="btn btn-secondary glass"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Get In Touch
-          </motion.button>
-        </motion.div>
-      </motion.div>
-
-      <motion.div
-        className="scroll-indicator"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <FiArrowDown size={24} />
-      </motion.div>
     </section>
   )
 }

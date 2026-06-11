@@ -1,90 +1,74 @@
-import { motion } from 'framer-motion'
-import { FiMail, FiPhone, FiMapPin, FiLinkedin } from 'react-icons/fi'
+import { useRef, useEffect } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Contact.css'
 
+gsap.registerPlugin(ScrollTrigger)
+
 const Contact = () => {
-  const contactInfo = [
-    {
-      icon: FiMail,
-      label: 'Email',
-      value: 'anchitya@hotmail.com',
-      link: 'mailto:anchitya@hotmail.com',
-    },
-    {
-      icon: FiPhone,
-      label: 'Phone',
-      value: '+91 (Your Phone)',
-      link: 'tel:+91xxxxx',
-    },
-    {
-      icon: FiMapPin,
-      label: 'Location',
-      value: 'Delhi, India',
-      link: '#',
-    },
-    {
-      icon: FiLinkedin,
-      label: 'LinkedIn',
-      value: 'linkedin.com/in/anchitya',
-      link: 'https://linkedin.com/in/anchitya',
-    },
-  ]
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!contentRef.current) return
+
+    gsap.from(contentRef.current, {
+      scrollTrigger: {
+        trigger: contentRef.current,
+        start: 'top 80%',
+        end: 'top 50%',
+        scrub: 1,
+      },
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+    })
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    }
+  }, [])
 
   return (
-    <section id="contact" className="contact">
-      <div className="container">
-        <motion.h2
-          className="section-title"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          Get In Touch
-        </motion.h2>
+    <section id="contact" className="contact" ref={sectionRef}>
+      <div className="contact-container">
+        <div className="contact-content" ref={contentRef}>
+          <h2 className="section-title">Get In Touch</h2>
+          <p className="contact-subtitle">
+            Have a project in mind? Let's collaborate and create something amazing together!
+          </p>
 
-        <div className="contact-content">
-          <motion.div
-            className="contact-text"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h3>Let's connect and discuss infrastructure solutions!</h3>
-            <p>
-              I'm always interested in hearing about new projects and opportunities.
-              Feel free to reach out through any of the channels below.
-            </p>
-          </motion.div>
+          <div className="contact-methods">
+            <a href="mailto:your-email@example.com" className="contact-card">
+              <div className="contact-icon">✉️</div>
+              <h3>Email</h3>
+              <p>your-email@example.com</p>
+            </a>
 
-          <div className="contact-grid">
-            {contactInfo.map((info, index) => {
-              const Icon = info.icon
-              return (
-                <motion.a
-                  key={info.label}
-                  href={info.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-card glass"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -5 }}
-                >
-                  <Icon size={24} className="contact-icon" />
-                  <div className="contact-details">
-                    <p className="contact-label">{info.label}</p>
-                    <p className="contact-value">{info.value}</p>
-                  </div>
-                </motion.a>
-              )
-            })}
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="contact-card">
+              <div className="contact-icon">𝕏</div>
+              <h3>Twitter</h3>
+              <p>@your-twitter</p>
+            </a>
+
+            <a href="https://github.com/anchitya" target="_blank" rel="noopener noreferrer" className="contact-card">
+              <div className="contact-icon">💻</div>
+              <h3>GitHub</h3>
+              <p>github.com/anchitya</p>
+            </a>
+
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="contact-card">
+              <div className="contact-icon">💼</div>
+              <h3>LinkedIn</h3>
+              <p>linkedin.com/in/anchitya</p>
+            </a>
           </div>
         </div>
       </div>
+
+      <footer className="footer">
+        <p>&copy; 2024 Anchitya. Built with React, TypeScript, and GSAP.</p>
+      </footer>
     </section>
   )
 }
